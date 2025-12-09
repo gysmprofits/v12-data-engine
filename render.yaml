@@ -1,0 +1,14 @@
+services:
+  - type: cron
+    name: nhl-scraper-job
+    runtime: python3
+    schedule: "0 */12 * * *"   # every 12 hours
+    envVars:
+      - key: SUPABASE_URL
+        sync: true
+      - key: SUPABASE_SERVICE_KEY
+        sync: true
+    buildCommand: ""
+    startCommand: |
+      python3 scrape_nhl.py "https://www.espn.com/nhl/player/gamelog/_/id/XXXXX" "Player Name" "TEAM" |
+      python3 insert_to_supabase.py
